@@ -25,5 +25,7 @@ cc_binary {
         "liblog",
         "libhwbinder",
         "libutils",
+        "libhardware",
+        "android.hardware.power@1.1",
     ],
 }

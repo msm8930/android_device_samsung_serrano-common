@@ -24,8 +24,7 @@ PRODUCT_AAPT_CONFIG := normal
 PRODUCT_AAPT_PREF_CONFIG := hdpi
 
 # Boot animation
-TARGET_SCREEN_HEIGHT := 960
-TARGET_SCREEN_WIDTH := 540
+TARGET_BOOTANIMATION_SIZE := 720
 
 # Permissions
 PRODUCT_COPY_FILES += \
@@ -149,10 +148,6 @@ PRODUCT_PACKAGES += \
 # Camera
 PRODUCT_PACKAGES += \
     Snap
-
-# FlipFlap
-PRODUCT_PACKAGES += \
-    FlipFlap
 
 # Telephony
 PRODUCT_PACKAGES += \
