@@ -155,10 +155,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     Snap
 
-# FlipFlap
-PRODUCT_PACKAGES += \
-    FlipFlap
-
 # Telephony
 PRODUCT_PACKAGES += \
     libsecnativefeature
