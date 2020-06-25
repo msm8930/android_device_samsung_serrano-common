@@ -124,8 +124,13 @@ on fs
     mount_all /vendor/etc/fstab.qcom
     mount none /system/etc/gps.conf /system/etc/gps_debug.conf bind
 
-    restorecon_recursive /persist
+    exec u:r:vendor_toolbox:s0 -- /vendor/bin/toybox_vendor find /efs -type d \
+        -exec /vendor/bin/toybox_vendor setfattr -x security.sehash {} \;
+    exec u:r:vendor_toolbox:s0 -- /vendor/bin/toybox_vendor find /persist -type d \
+        -exec /vendor/bin/toybox_vendor setfattr -x security.sehash {} \;
+
     restorecon_recursive /efs
+    restorecon_recursive /persist
 
     chown system radio /dev/block/platform/msm_sdcc.1/by-name
     chmod 0775 /dev/block/platform/msm_sdcc.1/by-name
@@ -569,6 +574,11 @@ service qmuxd /vendor/bin/qmuxd
     class core
     user radio
     group radio audio bluetooth gps diag wakelock log
+
+service loc_launcher /vendor/bin/loc_launcher
+    # loc_launcher will start as root and set its uid to gps
+    class late_start
+    group gps inet net_raw diag net_admin wifi
 
 # Adjust socket buffer to enlarge TCP receive window for high bandwidth
 # but only if ro.data.large_tcp_window_size property is set.
