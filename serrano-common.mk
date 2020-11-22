@@ -26,6 +26,7 @@ PRODUCT_AAPT_PREF_CONFIG := hdpi
 # Boot animation
 TARGET_SCREEN_HEIGHT := 960
 TARGET_SCREEN_WIDTH := 540
+TARGET_BOOT_ANIMATION_RES := 1440
 
 # Permissions
 PRODUCT_COPY_FILES += \
@@ -125,10 +126,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     android.hardware.power@1.1-service.serrano
 
-# Touch
-PRODUCT_PACKAGES += \
-    vendor.lineage.touch@1.0-service.serrano
-
 # LiveDisplay
 PRODUCT_PACKAGES += \
     vendor.lineage.livedisplay@2.0-service.serrano
@@ -142,6 +139,10 @@ PRODUCT_PACKAGES += \
     fsck.f2fs \
     mkfs.f2fs
 
+# IPv6 tethering
+PRODUCT_PACKAGES += \
+    android.hardware.health@2.0-service.serrano
+    
 # Doze
 PRODUCT_PACKAGES += \
     SamsungDoze
