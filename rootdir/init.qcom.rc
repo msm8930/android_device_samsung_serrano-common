@@ -41,7 +41,7 @@ on init
     mkdir /dev/bus/usb 0755 root root
 
     # Write WCNSS serial number
-    write /sys/devices/platform/wcnss_wlan.0/serial_number ${ro.serialno}
+    write /sys/devices/platform/wcnss_wlan.0/serial_number ${ro.boot.serialno}
 
 on early-boot
     # Set RLIMIT_MEMLOCK to 64MB
@@ -51,6 +51,8 @@ on early-boot
     # Will be recreated at end of boot
     rm /data/data/com.android.providers.telephony/databases/telephony.db
     rm /data/data/com.android.providers.telephony/shared_prefs/preferred-apn.xml
+
+    start qcamerasvr
 
 on boot
     # Permissions for bluetooth
@@ -502,21 +504,14 @@ on post-fs-data
     chown system system /sys/class/misc/backlightnotification/notification_led
     chown system system /sys/class/misc/backlightnotification/notification_led_mask
 
-    # PCC
-    chown system system /sys/devices/virtual/graphics/fb0/rgb
-    chmod 0660 /sys/devices/virtual/graphics/fb0/rgb
-
-    # Touchkey
-    chown system system /sys/class/sec/sec_touchkey/touchkey_enable
-    chmod 0660 /sys/class/sec/sec_touchkey/touchkey_enable
-
     setprop vold.post_fs_data_done 1
 
 # Start camera server as daemon
 service qcamerasvr /vendor/bin/mm-qcamera-daemon
-    class late_start
+    class main
     user camera
-    group camera system inet input graphics
+    group camera system inet input graphics media
+    disabled
 
 #service thermald /vendor/bin/thermald
 #    class main
@@ -614,6 +609,9 @@ on property:ro.data.large_tcp_window_size=true
 
 on property:sys.boot_completed=1
     start qcom-audio
+
+    exec u:r:vendor_init:s0 -- /vendor/bin/dumpsys deviceidle whitelist +com.android.deskclock
+    exec u:r:vendor_init:s0 -- /vendor/bin/dumpsys deviceidle whitelist +com.android.messaging
 
     # Symlink telephony.db and preferred-apn.xml
     mkdir /data/data/com.android.providers.telephony/databases 0700 radio radio
